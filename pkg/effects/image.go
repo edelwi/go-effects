@@ -102,6 +102,14 @@ func (i *Image) saveAsPNG(path string) error {
 	return nil
 }
 
+// Convert inner image format into image.Image format
+func (i *Image) ToImage() image.Image {
+	min_p := image.Point{X: 0, Y: 0}
+	max_p := image.Point{X: i.Width, Y: i.Height}
+	rect := image.Rectangle{Min: min_p, Max: max_p}
+	return i.img.SubImage(rect)
+}
+
 // LoadImage loads the specified image from disk. Supported file types are png and jpg
 func LoadImage(path string) (*Image, error) {
 	srcReader, err := os.Open(path)
@@ -118,6 +126,21 @@ func LoadImage(path string) (*Image, error) {
 		return nil, fmt.Errorf("failed to close image on load: %s, %s", path, err)
 	}
 
+	outImg := image.NewRGBA(img.Bounds())
+	draw.Draw(outImg, img.Bounds(), img, image.Point{}, draw.Over)
+
+	w := img.Bounds().Max.X
+	h := img.Bounds().Max.Y
+	return &Image{
+		img:    outImg,
+		Width:  w,
+		Height: h,
+		Bounds: Rect{X: 0, Y: 0, Width: w, Height: h},
+	}, nil
+}
+
+// Bind to loaded and decoded image. Supported file types are png and jpg
+func BindImage(img image.Image) (*Image, error) {
 	outImg := image.NewRGBA(img.Bounds())
 	draw.Draw(outImg, img.Bounds(), img, image.Point{}, draw.Over)
 

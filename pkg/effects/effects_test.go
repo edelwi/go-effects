@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/markdaws/go-effects/pkg/effects"
+	"github.com/edelwi/go-effects/pkg/effects"
 	"github.com/markdaws/go-timing"
 	"github.com/stretchr/testify/require"
 )
