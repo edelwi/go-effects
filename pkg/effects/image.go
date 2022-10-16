@@ -103,11 +103,12 @@ func (i *Image) saveAsPNG(path string) error {
 }
 
 // Convert inner image format into image.Image format
-func (i *Image) ToImage() image.Image {
+func (i *Image) ToImage() *image.Image {
 	min_p := image.Point{X: 0, Y: 0}
 	max_p := image.Point{X: i.Width, Y: i.Height}
 	rect := image.Rectangle{Min: min_p, Max: max_p}
-	return i.img.SubImage(rect)
+	img := i.img.SubImage(rect)
+	return &img
 }
 
 // LoadImage loads the specified image from disk. Supported file types are png and jpg
