@@ -140,12 +140,12 @@ func LoadImage(path string) (*Image, error) {
 }
 
 // Bind to loaded and decoded image. Supported file types are png and jpg
-func BindImage(img image.Image) (*Image, error) {
-	outImg := image.NewRGBA(img.Bounds())
-	draw.Draw(outImg, img.Bounds(), img, image.Point{}, draw.Over)
+func BindImage(img *image.Image) (*Image, error) {
+	outImg := image.NewRGBA((*img).Bounds())
+	draw.Draw(outImg, (*img).Bounds(), *img, image.Point{}, draw.Over)
 
-	w := img.Bounds().Max.X
-	h := img.Bounds().Max.Y
+	w := (*img).Bounds().Max.X
+	h := (*img).Bounds().Max.Y
 	return &Image{
 		img:    outImg,
 		Width:  w,
